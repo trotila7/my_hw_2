@@ -1,4 +1,5 @@
 from typing import Any
+
 from src.masks import mask_card_1, mask_card_2
 
 num_user = input("Введите номер карты или счета")
