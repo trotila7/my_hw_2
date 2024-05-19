@@ -3,6 +3,7 @@ from typing import Any
 from src.masks import mask_card_1, mask_card_2
 
 num_user = input("Введите номер карты или счета")
+data_str = "2018-07-11T02:26:18.671407"
 
 
 def mask_card_3(card_or_account: Any) -> str:
@@ -29,4 +30,13 @@ def mask_card_3(card_or_account: Any) -> str:
         return masks_num_card
 
 
+def data_transformation(data_input):
+    day = data_input[8:10]
+    month = data_input[5:7]
+    year = data_input[:4]
+    data_format = ".".join([day, month, year])
+    return data_format
+
+
 print(mask_card_3(num_user))
+print(data_transformation(data_str))
