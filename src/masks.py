@@ -31,7 +31,7 @@ def mask_card_2(card: Union[int, str]) -> str:
     mask_card_output = list()
     mask_card_output_str_2 = str()
     if len(num_card_str) == 16 or len(num_card_str) == 20:
-        mask_card_output = num_card_str[-6:]
+        mask_card_output = num_card_str[-4:]
         mask_card_output.insert(0, "**")
         mask_card_output_str_2 = "".join(mask_card_output)
     else:
