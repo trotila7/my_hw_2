@@ -30,7 +30,7 @@ def mask_card_3(card_or_account: Any) -> str:
         return masks_num_card
 
 
-def data_transformation(data_input):
+def data_transformation(data_input: str) -> str:
     """Функция, которая преобразовывает строку в форматы даты 11.07.2018"""
     day = data_input[8:10]
     month = data_input[5:7]
