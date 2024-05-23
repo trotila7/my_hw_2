@@ -38,6 +38,6 @@ def mask_card_2(card: Union[int, str]) -> str:
         mask_card_output_str_2 = "Вы ввели некорректный номер карты"
     return mask_card_output_str_2
 
-
-print(mask_card_1(num_card))
-print(mask_card_2(num_card))
+if __name__ == "__main__":
+    print(mask_card_1(num_card))
+    print(mask_card_2(num_card))

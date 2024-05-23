@@ -8,23 +8,16 @@ data_str = "2018-07-11T02:26:18.671407"
 
 def mask_card_3(card_or_account: Any) -> str:
     """Функция, которая маскирует номер карты или счета"""
-    # good_starts = ("Visa", "Cчет", "Maestro", "MasterCard")
-    if card_or_account.startswith("Счет"):
-        num_card = card_or_account[-20:]
-        masks_num_account = str(card_or_account[:-20] + mask_card_2(num_card))
-        return masks_num_account
-    elif card_or_account.startswith("Visa"):
-        num_card = card_or_account[-16:]
-        masks_num_card = str(card_or_account[:-16] + mask_card_1(num_card))
-        return masks_num_card
-    elif card_or_account.startswith("Maestro"):
-        num_card = card_or_account[-16:]
-        masks_num_card = str(card_or_account[:-16] + mask_card_1(num_card))
-        return masks_num_card
-    elif card_or_account.startswith("MasterCard"):
-        num_card = card_or_account[-16:]
-        masks_num_card = str(card_or_account[:-16] + mask_card_1(num_card))
-        return masks_num_card
+    good_starts = tuple(["Visa", "Cчет", "Cчёт", "Maestro", "Master"])
+    if card_or_account.startswith(good_starts):
+        if card_or_account.startswith("Счет") or card_or_account.startswith("Счёт"):
+            num_card = card_or_account[-20:]
+            masks_num_account = str(card_or_account[:-20] + mask_card_2(num_card))
+            return masks_num_account
+        else:
+            num_card = card_or_account[-16:]
+            masks_num_card = str(card_or_account[:-16] + mask_card_1(num_card))
+            return masks_num_card
     else:
         masks_num_card = "Введен некорректный номер карты или счета"
         return masks_num_card
