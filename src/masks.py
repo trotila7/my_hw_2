@@ -1,7 +1,5 @@
 from typing import Union
 
-num_card = input("Введите номер карты")
-
 
 def mask_card_1(card: Union[int, str]) -> str:
     """Функция, которая маскирует номер карты в формат XXXX XX** **** XXXX"""
@@ -40,5 +38,6 @@ def mask_card_2(card: Union[int, str]) -> str:
 
 
 if __name__ == "__main__":
+    num_card = input("Введите номер карты")
     print(mask_card_1(num_card))
     print(mask_card_2(num_card))
