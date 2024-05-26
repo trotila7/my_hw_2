@@ -2,7 +2,6 @@ from typing import Any
 
 from src.masks import mask_card_1, mask_card_2
 
-num_user = input("Введите номер карты или счета")
 data_str = "2018-07-11T02:26:18.671407"
 
 
@@ -32,5 +31,7 @@ def data_transformation(data_input: str) -> str:
     return data_format
 
 
-print(mask_card_3(num_user))
-print(data_transformation(data_str))
+if __name__ == "__main__":
+    num_user = input("Введите номер карты или счета")
+    print(mask_card_3(num_user))
+    print(data_transformation(data_str))
