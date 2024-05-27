@@ -81,7 +81,7 @@ transactions = (
 )
 
 
-def filter_by_currency(input_list: Iterable[dict], code: str) -> Iterator[dict]:
+def filter_by_currency(input_list: Iterable[dict], code: str = "USD") -> Iterator[dict]:
     """ Функция, которая принимает список словарей с банковскими операциями и возвращает
     итератор, который выдает по очереди операции, в которых указана заданная валюта """
     for transaction in input_list:
