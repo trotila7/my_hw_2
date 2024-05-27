@@ -6,9 +6,10 @@ def filter_dict(input_dict: List[dict], key_filter: str = "EXECUTED") -> List[di
     """Функция, которая фильтрует словарь, у которых ключ state
     cодержит переданное в функцию значение"""
     filtered_dict = []
-    for i in input_dict:
-        if i["state"] == key_filter:
-            filtered_dict.append(i)
+    if len(input_dict) > 0:
+        for i in input_dict:
+            if i["state"] == key_filter:
+                filtered_dict.append(i)
     return filtered_dict
 
 
