@@ -1,15 +1,14 @@
 import json
 import unittest
-from unittest.mock import mock_open,MagicMock, patch
+from unittest.mock import mock_open, MagicMock, patch
 from src.utils import transaction_amount
-from src.external_api import currency_conversion
 
 
 class TestGetTransactions(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open, read_data='[{"transaction":"data1"}, {"transaction":"data2"}]')
     def test_transaction_amount_valid_file(self, mock_file: MagicMock) -> None:
-        expected_data = [{"transaction":"data1"}, {"transaction":"data2"}]
+        expected_data = [{"transaction": "data1"}, {"transaction": "data2"}]
         result = transaction_amount("fake_path.json")
         self.assertEqual(result, expected_data)
         mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
@@ -39,8 +38,3 @@ class TestGetTransactions(unittest.TestCase):
         self.assertEqual(result, [])
         mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
         mock_json_load.assert_called_once()
-
-
-
-
-
