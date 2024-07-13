@@ -1,4 +1,3 @@
-import os
 import json
 from typing import Any
 
@@ -12,5 +11,5 @@ def transaction_amount(file_path: str) -> Any:
         else:
             return []
     except Exception as e:
-        print(f'Ошибка {e}')
+        print(f"Ошибка {e}")
         return []

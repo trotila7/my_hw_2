@@ -1,6 +1,7 @@
 import json
 import unittest
-from unittest.mock import mock_open, MagicMock, patch
+from unittest.mock import MagicMock, mock_open, patch
+
 from src.utils import transaction_amount
 
 
@@ -19,7 +20,7 @@ class TestGetTransactions(unittest.TestCase):
         self.assertEqual(result, [])
         mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
 
-    @patch("builtins.open", new_callable=mock_open, read_data='')
+    @patch("builtins.open", new_callable=mock_open, read_data="")
     def test_transaction_amount_empty_file(self, mock_file: MagicMock) -> None:
         result = transaction_amount("fake_path.json")
         self.assertEqual(result, [])
