@@ -1,41 +1,33 @@
 import json
-import unittest
-from unittest.mock import MagicMock, mock_open, patch
+from unittest.mock import ANY, mock_open, patch
 
-from src.utils import transaction_amount
+import pandas as pd
+
+from src.utils import read_json_transactions
 
 
-class TestGetTransactions(unittest.TestCase):
+def test_transaction_in_rub():
+    with patch('src.external_api.currency_conversion') as mock_conversion:
+        mock_conversion.side_effect = AssertionError("Should not be called")
+        transactions = [{"operationAmount": {"currency": {"code": "RUB"}, "amount": "100"}}]
+        result = read_json_transactions(transactions)
+        assert result == 100.0
 
-    @patch("builtins.open", new_callable=mock_open, read_data='[{"transaction":"data1"}, {"transaction":"data2"}]')
-    def test_transaction_amount_valid_file(self, mock_file: MagicMock) -> None:
-        expected_data = [{"transaction": "data1"}, {"transaction": "data2"}]
-        result = transaction_amount("fake_path.json")
-        self.assertEqual(result, expected_data)
-        mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
 
-    @patch("builtins.open", new_callable=mock_open, read_data="[]")
-    def test_transaction_amount_invalid_content(self, mock_file: MagicMock) -> None:
-        result = transaction_amount("fake_path.json")
-        self.assertEqual(result, [])
-        mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
+def test_transaction_not_in_rub():
+    with patch('src.external_api.currency_conversion') as mock_conversion:
+        mock_conversion.return_value = 120.0
+        transactions = [{"operationAmount": {"currency": {"code": "USD"}, "amount": "100"}}]
+        result = read_json_transactions(transactions)
+        assert result is None
 
-    @patch("builtins.open", new_callable=mock_open, read_data="")
-    def test_transaction_amount_empty_file(self, mock_file: MagicMock) -> None:
-        result = transaction_amount("fake_path.json")
-        self.assertEqual(result, [])
-        mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
 
-    @patch("builtins.open", side_effect=FileNotFoundError)
-    def test_transaction_amount_file_not_file(self, mock_file: MagicMock) -> None:
-        result = transaction_amount("fake_path.json")
-        self.assertEqual(result, [])
-        mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
-
-    @patch("builtins.open", new_callable=mock_open, read_data='{"transaction":"data"}')
-    @patch("json.load", side_effect=json.JSONDecodeError("Expecting value", "", 0))
-    def test_transaction_amount_json_decode_error(self, mock_json_load: MagicMock, mock_file: MagicMock) -> None:
-        result = transaction_amount("fake_path.json")
-        self.assertEqual(result, [])
-        mock_file.assert_called_once_with("fake_path.json", "r", encoding="utf-8")
-        mock_json_load.assert_called_once()
+def test_multiple_transactions():
+    with patch('src.external_api.currency_conversion') as mock_conversion:
+        mock_conversion.side_effect = [120.0, 150.0]
+        transactions = [
+            {"operationAmount": {"currency": {"code": "USD"}, "amount": "100"}},
+            {"operationAmount": {"currency": {"code": "EUR"}, "amount": "120"}}
+        ]
+        result = read_json_transactions(transactions)
+        assert result is None
