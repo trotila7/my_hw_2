@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any
+from typing import Any, List, Dict
 
 logging.basicConfig(
     level=logging.INFO,
@@ -12,18 +12,25 @@ logging.basicConfig(
 utils_logger = logging.getLogger("utils")
 
 
-def transaction_amount(file_path: str) -> Any:
+def read_json_transactions(file_path: str) -> List[Dict[str, Any]]:
+    """
+    Считывает JSON-файл, содержащий транзакции, и возвращает их в виде списка словарей.
+    """
     try:
-        utils_logger.info("Открытие json-файла")
-        with open(file_path, "r", encoding="utf-8") as file:
-            repository = json.load(file)
-        if isinstance(repository, (list, dict)):
-            utils_logger.info("Файл открыт успешно")
-            return repository
-        else:
-            utils_logger.debug("Файл не содержит необходимые данные")
-            return []
-    except Exception as e:
-        utils_logger.error(f"Ошибка при открытии файла {e}")
-        print(f"Ошибка {e}")
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            # Предположим, что структура в файле — список объектов-транзакций
+            if isinstance(data, list):
+                return data
+            else:
+                utils_logger.warning(f"JSON-файл {file_path} содержит не список, возвращаем пустой список.")
+                return []
+    except FileNotFoundError as e:
+        utils_logger.error(f"Файл {file_path} не найден: {e}")
+        return []
+    except json.JSONDecodeError as e:
+        utils_logger.error(f"Некорректный формат JSON в файле {file_path}: {e}")
+        return []
+    except Exception as exc:
+        utils_logger.error(f"Неизвестная ошибка при чтении {file_path}: {exc}")
         return []
