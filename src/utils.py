@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 logging.basicConfig(
     level=logging.INFO,
